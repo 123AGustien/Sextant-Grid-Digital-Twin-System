@@ -1,6 +1,6 @@
-from core_engine.grid_module.telemetry import TelemetryGenerator
-from core_engine.grid_module.prediction import GridPredictor
-from core_engine.grid_module.stability import StabilityAnalyzer
+from grid_module.telemetry import TelemetryGenerator
+from grid_module.prediction import GridPredictor
+from grid_module.stability import StabilityAnalyzer
 
 import json
 import os
