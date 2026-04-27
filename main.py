@@ -1,9 +1,9 @@
-import json
+ import json
 import os
 
-from grid_module.telemetry import TelemetryGenerator
-from grid_module.prediction import GridPredictor
-from grid_module.stability import StabilityAnalyzer
+from core_engine.grid_module.telemetry import TelemetryGenerator
+from core_engine.grid_module.prediction import GridPredictor
+from core_engine.grid_module.stability import StabilityAnalyzer
 
 
 def run_pipeline():
@@ -44,4 +44,4 @@ def run_pipeline():
 
 
 if __name__ == "__main__":
-    run_pipeline()
+    run_pipeline()   
