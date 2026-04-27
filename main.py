@@ -1,35 +1,23 @@
 import json
 import os
 
-from core_engine.grid_module.telemetry import TelemetryGenerator
-from core_engine.grid_module.prediction import GridPredictor
-from core_engine.grid_module.stability import StabilityAnalyzer
+from core_engine.telemetry import TelemetryGenerator
+from core_engine.prediction import GridPredictor
+from core_engine.stability import StabilityAnalyzer
+from core_engine.simulation_engine import SimulationEngine
 
 
-def run_pipeline():
-    # 1. TELEMETRY
+def main():
+    engine = SimulationEngine()
+
     telemetry = TelemetryGenerator(seed=42)
     snapshot = telemetry.generate_snapshot()
 
-    print("TELEMETRY SNAPSHOT:")
-    print(snapshot)
-
-    # 2. PREDICTION
     predictor = GridPredictor()
     prediction = predictor.analyze(snapshot)
 
-    print("\nPREDICTION RESULT:")
-    print(prediction)
-
-    # 3. STABILITY
     analyzer = StabilityAnalyzer()
     stability = analyzer.compute(prediction)
-
-    print("\nSTABILITY RESULT:")
-    print(stability)
-
-    # 4. OUTPUT ARTIFACT
-    os.makedirs("artifacts", exist_ok=True)
 
     output = {
         "telemetry": snapshot,
@@ -37,11 +25,14 @@ def run_pipeline():
         "stability": stability
     }
 
+    os.makedirs("artifacts", exist_ok=True)
+
     with open("artifacts/output.json", "w") as f:
         json.dump(output, f, indent=2)
 
-    print("\nARTIFACT SAVED: artifacts/output.json")
+    print("✔ SUCCESS")
+    print("✔ Output saved to artifacts/output.json")
 
 
 if __name__ == "__main__":
-    run_pipeline()
+    main()
