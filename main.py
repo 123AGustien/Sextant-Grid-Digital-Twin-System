@@ -2,6 +2,9 @@ from grid_module.telemetry import TelemetryGenerator
 from grid_module.prediction import GridPredictor
 from grid_module.stability import StabilityAnalyzer
 
+import json
+import os
+
 
 def run_pipeline():
     # 1. TELEMETRY
@@ -24,6 +27,20 @@ def run_pipeline():
 
     print("\nSTABILITY RESULT:")
     print(stability)
+
+    # 4. ARTIFACT OUTPUT (EMA EVIDENCE)
+    os.makedirs("artifacts", exist_ok=True)
+
+    output = {
+        "telemetry": snapshot,
+        "prediction": prediction,
+        "stability": stability
+    }
+
+    with open("artifacts/output.json", "w") as f:
+        json.dump(output, f, indent=2)
+
+    print("\nARTIFACT SAVED: artifacts/output.json")
 
 
 if __name__ == "__main__":
