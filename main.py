@@ -18,6 +18,13 @@ def run_pipeline():
     print("\nPREDICTION RESULT:")
     print(prediction)
 
+    # 3. STABILITY (FINAL DECISION LAYER)
+    analyzer = StabilityAnalyzer()
+    stability = analyzer.compute(prediction)
+
+    print("\nSTABILITY RESULT:")
+    print(stability)
+
 
 if __name__ == "__main__":
     run_pipeline()
