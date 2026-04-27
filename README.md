@@ -58,7 +58,7 @@ Mature / experimental / in development notes
 🎯 7. Objective / Purpose
 Why the system exists
 🛣️ Standard Enterprise Order (clean version)
-So your README structure should always be:
+
 Overview
 Core Principles
 System Architecture
