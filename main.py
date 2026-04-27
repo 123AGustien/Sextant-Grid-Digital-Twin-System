@@ -28,7 +28,7 @@ def run_pipeline():
     print("\nSTABILITY RESULT:")
     print(stability)
 
-    # 4. ARTIFACT OUTPUT (EMA EVIDENCE)
+    # 4. ARTIFACT OUTPUT
     os.makedirs("artifacts", exist_ok=True)
 
     output = {
