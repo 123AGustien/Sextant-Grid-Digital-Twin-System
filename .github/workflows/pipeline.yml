@@ -26,7 +26,7 @@ jobs:
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
-      - name: Debug folder structure
+      - name: Debug project structure
         run: |
           pwd
           ls -R
@@ -35,9 +35,3 @@ jobs:
         run: |
           set -euxo pipefail
           python -u main.py
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: grid-output
-          path: artifacts/
