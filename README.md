@@ -1,4 +1,55 @@
+# 🧠 Sextant-Grid-Digital-Twin-System
 
+Deterministic grid simulation and digital twin framework for power system resilience, failure propagation modelling, and predictive grid analytics.
+
+---
+
+## 🏢 Overview
+
+This system is a **deterministic simulation engine** designed to model electrical grid behaviour under controlled conditions.
+
+It enables:
+
+- Grid dependency modelling
+- Cascading failure propagation analysis
+- Stability and resilience evaluation
+- Predictive simulation of system stress scenarios
+
+This is a **research and simulation framework**, not a live production grid controller.
+
+---
+
+## ⚙️ Core Principles
+
+- **Deterministic Execution** → same input = same output  
+- **Reproducibility** → all runs can be replayed  
+- **Modular Design** → each component operates independently  
+
+---
+
+## 🧩 Architecture
+
+High-level system components:
+
+- Core Engine (`core_engine/`)
+- Simulation Runtime (`main.py`)
+- Grid Model (`grid_nodes.py`)
+- Failure Propagation Layer (`failure_propagation.py`)
+- CI Simulation Workflows (`.github/workflows/`)
+
+---
+
+## 🔬 System Status
+
+- Type: Deterministic simulation framework  
+- Stage: Active research system  
+- Mode: Fully sandboxed execution  
+
+---
+
+## 🎯 Objective
+
+To model and analyse cascading failures in electrical grid systems using deterministic, reproducible simulation logic.
 # 🧠 Sextant-Grid-Digital-Twin-System
 
 Deterministic grid simulation and digital twin framework for power system resilience, failure propagation modelling, and predictive grid analytics.
