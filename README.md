@@ -1,3 +1,41 @@
+## 🧊 System Freeze (v1.0)
+
+This system is operating under a **frozen deterministic baseline (v1.0)**.
+
+### Freeze Definition
+
+The v1.0 state guarantees:
+
+- Deterministic simulation behaviour is locked
+- Cascade failure logic is stable and reproducible
+- Core architecture is read-only and versioned
+- All outputs remain consistent for identical inputs
+
+### Freeze Boundary
+
+The following components are considered frozen:
+
+- Grid dependency model
+- Failure propagation engine
+- Scenario execution logic
+- Simulation runtime behaviour
+
+### Modification Rule
+
+No structural changes are permitted within v1.0.
+
+All enhancements must be introduced through:
+- `develop` → experimental integration
+- `v1.1+` → new frozen release versions
+
+---
+
+### 🧠 Interpretation
+
+v1.0 represents a **reference simulation state**, not an evolving system.
+
+It is the baseline against which all future system behaviour is measured.
+
 # 🧠 Sextant-Grid-Digital-Twin-System
 
 Deterministic grid simulation and digital twin framework for power system resilience, failure propagation modelling, and predictive grid analytics.
