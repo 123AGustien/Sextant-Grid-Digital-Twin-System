@@ -1,4 +1,4 @@
-name: Deploy Sextant Grid Digital Twin Cockpit
+name: Deploy Sextant Grid Digital Twin to GitHub Pages
 
 on:
   push:
@@ -17,11 +17,11 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -30,10 +30,15 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload cockpit
+      - name: Prepare website
+        run: |
+          mkdir -p _site
+          cp -R web/. _site/
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./web
+          path: ./_site
 
       - name: Deploy to GitHub Pages
         id: deployment
