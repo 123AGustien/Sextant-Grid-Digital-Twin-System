@@ -2,6 +2,12 @@
    SEXTANT GRID DIGITAL TWIN
    GRAM v1.0.0 — Research Cockpit
    Deterministic Client-Side Assessment Interface
+
+   Research-only:
+   - No live grid control
+   - No operational commands
+   - Deterministic calculations
+   - Reproducible assessment records
    ========================================================= */
 
 
@@ -26,23 +32,28 @@ const DEFAULT_STATE = {
 const SCENARIOS = {
 
     NORMAL_OPERATION: {
-        description: "Normal grid operating condition."
+        description: "Normal grid operating condition.",
+        scenarioPenalty: 0
     },
 
     NODE_FAILURE: {
-        description: "Failure of one or more grid nodes."
+        description: "Failure of one or more grid nodes.",
+        scenarioPenalty: 5
     },
 
     DEPENDENCY_FAILURE: {
-        description: "Failure affecting dependent grid nodes."
+        description: "Failure affecting dependent grid nodes.",
+        scenarioPenalty: 10
     },
 
     CASCADE_FAILURE: {
-        description: "Failure propagating through multiple dependencies."
+        description: "Failure propagating through multiple dependencies.",
+        scenarioPenalty: 15
     },
 
     CRITICAL_INFRASTRUCTURE_FAILURE: {
-        description: "Failure affecting designated critical infrastructure."
+        description: "Failure affecting designated critical infrastructure.",
+        scenarioPenalty: 20
     }
 
 };
@@ -59,7 +70,7 @@ const totalNodesInput =
     document.getElementById("totalNodes");
 
 const failedNodesInput =
-    document.getElementById("failedNodes");
+    document.getElementById("failedNodes);
 
 const affectedNodesInput =
     document.getElementById("affectedNodes");
@@ -126,6 +137,17 @@ function validateInputs(
     }
 
     if (
+        !Number.isFinite(failedNodes) ||
+        !Number.isFinite(affectedNodes) ||
+        !Number.isFinite(criticalNodesAffected) ||
+        !Number.isFinite(propagationDepth)
+    ) {
+        throw new Error(
+            "All assessment values must be valid numbers."
+        );
+    }
+
+    if (
         failedNodes < 0 ||
         affectedNodes < 0 ||
         criticalNodesAffected < 0 ||
@@ -167,6 +189,7 @@ function validateInputs(
    ========================================================= */
 
 function calculateResilienceScore(
+    scenario,
     totalNodes,
     failedNodes,
     affectedNodes,
@@ -193,21 +216,70 @@ function calculateResilienceScore(
         );
 
 
-    const penalty =
-        failureRatio * 40 +
-        affectedRatio * 30 +
-        criticalRatio * 20 +
+    const failurePenalty =
+        failureRatio * 40;
+
+    const affectedPenalty =
+        affectedRatio * 30;
+
+    const criticalPenalty =
+        criticalRatio * 20;
+
+    const propagationPenalty =
         propagationRatio * 10;
 
 
+    const scenarioPenalty =
+        SCENARIOS[scenario].scenarioPenalty;
+
+
+    const totalPenalty =
+        failurePenalty +
+        affectedPenalty +
+        criticalPenalty +
+        propagationPenalty +
+        scenarioPenalty;
+
+
     const score =
-        100 - penalty;
+        100 - totalPenalty;
 
 
-    return Number(
-        Math.max(0, Math.min(score, 100))
-            .toFixed(3)
-    );
+    return {
+        score: Number(
+            Math.max(0, Math.min(score, 100))
+                .toFixed(3)
+        ),
+
+        penalty_breakdown: {
+            failure_penalty: Number(
+                failurePenalty.toFixed(3)
+            ),
+
+            affected_penalty: Number(
+                affectedPenalty.toFixed(3)
+            ),
+
+            critical_penalty: Number(
+                criticalPenalty.toFixed(3)
+            ),
+
+            propagation_penalty: Number(
+                propagationPenalty.toFixed(3)
+            ),
+
+            scenario_penalty: Number(
+                scenarioPenalty.toFixed(3)
+            ),
+
+            total_penalty: Number(
+                Math.min(
+                    totalPenalty,
+                    100
+                ).toFixed(3)
+            )
+        }
+    };
 }
 
 
@@ -289,7 +361,7 @@ function buildAssessmentRecord(
     affectedNodes,
     criticalNodesAffected,
     propagationDepth,
-    score,
+    calculation,
     risk
 ) {
 
@@ -320,14 +392,20 @@ function buildAssessmentRecord(
             propagationDepth,
 
         resilience_score:
-            score,
+            calculation.score,
 
         risk_level:
             risk,
 
+        penalty_breakdown:
+            calculation.penalty_breakdown,
+
         deterministic: true,
 
-        simulation_control: false
+        simulation_control: false,
+
+        research_boundary:
+            "NO LIVE GRID CONTROL"
 
     };
 }
@@ -343,6 +421,13 @@ function runAssessment() {
 
         const scenario =
             scenarioInput.value;
+
+
+        if (!SCENARIOS[scenario]) {
+            throw new Error(
+                "Unknown assessment scenario."
+            );
+        }
 
 
         const totalNodes =
@@ -370,8 +455,9 @@ function runAssessment() {
         );
 
 
-        const score =
+        const calculation =
             calculateResilienceScore(
+                scenario,
                 totalNodes,
                 failedNodes,
                 affectedNodes,
@@ -381,7 +467,9 @@ function runAssessment() {
 
 
         const risk =
-            classifyRisk(score);
+            classifyRisk(
+                calculation.score
+            );
 
 
         updateGridDisplay(
@@ -394,7 +482,7 @@ function runAssessment() {
 
 
         resilienceScore.textContent =
-            score.toFixed(3);
+            calculation.score.toFixed(3);
 
 
         updateRiskDisplay(risk);
@@ -408,7 +496,7 @@ function runAssessment() {
                 affectedNodes,
                 criticalNodesAffected,
                 propagationDepth,
-                score,
+                calculation,
                 risk
             );
 
@@ -423,7 +511,11 @@ function runAssessment() {
 
         assessmentMessage.textContent =
             "Deterministic assessment complete. " +
-            "Identical inputs produce the same result.";
+            "Identical inputs and scenario produce the same result.";
+
+
+        assessmentMessage.style.borderLeftColor =
+            "";
 
 
     } catch (error) {
