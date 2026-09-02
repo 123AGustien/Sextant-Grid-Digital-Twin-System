@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sextant Grid Digital Twin — Research Cockpit</title>
+
+    <meta
+        name="description"
+        content="Sextant Grid Digital Twin Research Cockpit — deterministic grid resilience assessment."
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div>
+        <div class="brand">🧠 SEXTANT GRID DIGITAL TWIN</div>
+        <div class="subtitle">
+            Grid Resilience Assessment Module — GRAM
+        </div>
+    </div>
+
+    <div class="system-status">
+        <span class="status-dot"></span>
+        SYSTEM READY
+    </div>
+</header>
+
+
+<main class="cockpit">
+
+    <!-- SYSTEM OVERVIEW -->
+
+    <section class="panel overview-panel">
+
+        <div class="panel-title">
+            SYSTEM OVERVIEW
+        </div>
+
+        <div class="status-grid">
+
+            <div class="status-card">
+                <span>CORE VERSION</span>
+                <strong>v1.0</strong>
+            </div>
+
+            <div class="status-card">
+                <span>GRAM VERSION</span>
+                <strong>v1.0.0</strong>
+            </div>
+
+            <div class="status-card">
+                <span>EXECUTION</span>
+                <strong>SANDBOXED</strong>
+            </div>
+
+            <div class="status-card">
+                <span>DETERMINISTIC</span>
+                <strong>YES</strong>
+            </div>
+
+            <div class="status-card">
+                <span>LIVE GRID CONTROL</span>
+                <strong>NO</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SCENARIO CONTROL -->
+
+    <section class="panel">
+
+        <div class="panel-title">
+            SCENARIO CONTROL
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group scenario-group">
+                <label for="scenario">
+                    Scenario
+                </label>
+
+                <select id="scenario">
+
+                    <option value="NORMAL_OPERATION">
+                        NORMAL OPERATION
+                    </option>
+
+                    <option value="NODE_FAILURE">
+                        NODE FAILURE
+                    </option>
+
+                    <option value="DEPENDENCY_FAILURE">
+                        DEPENDENCY FAILURE
+                    </option>
+
+                    <option value="CASCADE_FAILURE" selected>
+                        CASCADE FAILURE
+                    </option>
+
+                    <option value="CRITICAL_INFRASTRUCTURE_FAILURE">
+                        CRITICAL INFRASTRUCTURE FAILURE
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+                <label for="totalNodes">
+                    Total Grid Nodes
+                </label>
+
+                <input
+                    id="totalNodes"
+                    type="number"
+                    min="1"
+                    value="20"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="failedNodes">
+                    Failed Nodes
+                </label>
+
+                <input
+                    id="failedNodes"
+                    type="number"
+                    min="0"
+                    value="3"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="affectedNodes">
+                    Affected Nodes
+                </label>
+
+                <input
+                    id="affectedNodes"
+                    type="number"
+                    min="0"
+                    value="7"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="criticalNodes">
+                    Critical Nodes Affected
+                </label>
+
+                <input
+                    id="criticalNodes"
+                    type="number"
+                    min="0"
+                    value="1"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="propagationDepth">
+                    Propagation Depth
+                </label>
+
+                <input
+                    id="propagationDepth"
+                    type="number"
+                    min="0"
+                    value="2"
+                >
+            </div>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <button id="runButton" class="primary-button">
+                ▶ RUN GRAM ASSESSMENT
+            </button>
+
+            <button id="resetButton" class="secondary-button">
+                ↻ RESET
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- GRID STATE -->
+
+    <section class="panel">
+
+        <div class="panel-title">
+            GRID STATE
+        </div>
+
+        <div class="metric-grid">
+
+            <div class="metric-card">
+                <span>TOTAL NODES</span>
+                <strong id="displayTotalNodes">20</strong>
+            </div>
+
+            <div class="metric-card">
+                <span>FAILED NODES</span>
+                <strong id="displayFailedNodes">3</strong>
+            </div>
+
+            <div class="metric-card">
+                <span>AFFECTED NODES</span>
+                <strong id="displayAffectedNodes">7</strong>
+            </div>
+
+            <div class="metric-card">
+                <span>CRITICAL NODES</span>
+                <strong id="displayCriticalNodes">1</strong>
+            </div>
+
+            <div class="metric-card">
+                <span>PROPAGATION DEPTH</span>
+                <strong id="displayPropagationDepth">2</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESILIENCE RESULT -->
+
+    <section class="panel result-panel">
+
+        <div class="panel-title">
+            GRAM RESILIENCE ASSESSMENT
+        </div>
+
+
+        <div class="result-main">
+
+            <div class="score-container">
+
+                <div class="result-label">
+                    RESILIENCE SCORE
+                </div>
+
+                <div id="resilienceScore" class="score">
+                    80.500
+                </div>
+
+                <div class="score-unit">
+                    / 100
+                </div>
+
+            </div>
+
+
+            <div class="risk-container">
+
+                <div class="result-label">
+                    RISK CLASSIFICATION
+                </div>
+
+                <div id="riskLevel" class="risk low">
+                    LOW
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="assessmentMessage" class="assessment-message">
+            Deterministic assessment complete.
+        </div>
+
+    </section>
+
+
+    <!-- PIPELINE -->
+
+    <section class="panel">
+
+        <div class="panel-title">
+            DETERMINISTIC EXECUTION PIPELINE
+        </div>
+
+        <div class="pipeline">
+
+            <div class="pipeline-step active">
+                <span>01</span>
+                INPUT
+            </div>
+
+            <div class="pipeline-arrow">→</div>
+
+            <div class="pipeline-step active">
+                <span>02</span>
+                GRID MODEL
+            </div>
+
+            <div class="pipeline-arrow">→</div>
+
+            <div class="pipeline-step active">
+                <span>03</span>
+                EVENT
+            </div>
+
+            <div class="pipeline-arrow">→</div>
+
+            <div class="pipeline-step active">
+                <span>04</span>
+                PROPAGATION
+            </div>
+
+            <div class="pipeline-arrow">→</div>
+
+            <div class="pipeline-step active">
+                <span>05</span>
+                STATE
+            </div>
+
+            <div class="pipeline-arrow">→</div>
+
+            <div class="pipeline-step active">
+                <span>06</span>
+                GRAM
+            </div>
+
+            <div class="pipeline-arrow">→</div>
+
+            <div class="pipeline-step active">
+                <span>07</span>
+                RESULT
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASSESSMENT RECORD -->
+
+    <section class="panel">
+
+        <div class="panel-title">
+            STRUCTURED ASSESSMENT RECORD
+        </div>
+
+        <pre id="assessmentRecord">{
+  "module": "GRAM",
+  "module_version": "1.0.0",
+  "scenario": "CASCADE_FAILURE",
+  "deterministic": true,
+  "simulation_control": false
+}</pre>
+
+    </section>
+
+
+    <!-- SAFETY BOUNDARY -->
+
+    <section class="boundary-panel">
+
+        <div class="boundary-title">
+            ⚠ RESEARCH / SIMULATION BOUNDARY
+        </div>
+
+        <div class="boundary-text">
+
+            This cockpit is a research and simulation interface.
+
+            It does not control live electrical-grid infrastructure,
+            issue operational commands, modify protection settings,
+            or replace certified grid-control systems.
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <div>
+        Sextant Grid Digital Twin System
+    </div>
+
+    <div>
+        GRAM v1.0.0 · Deterministic Research Framework
+    </div>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
